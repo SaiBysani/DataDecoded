@@ -70,7 +70,7 @@ img {
 .navbar .container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 1.5rem;
   padding: 1rem 2rem;
   max-width: var(--max-width);
   margin: 0 auto;
@@ -91,6 +91,7 @@ img {
   display: flex;
   list-style: none;
   gap: 2rem;
+  margin-left: auto;
 }
 
 .nav-links a {
@@ -552,6 +553,102 @@ main {
   font-weight: 500;
 }
 
+/* ===== THEME TOGGLE ===== */
+.theme-toggle {
+  background: none;
+  border: 1px solid rgba(0, 119, 255, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.theme-toggle:hover {
+  color: var(--blue);
+  border-color: rgba(0, 119, 255, 0.35);
+}
+
+.theme-toggle .icon-moon {
+  display: none;
+}
+
+[data-theme="light"] .theme-toggle .icon-sun {
+  display: none;
+}
+
+[data-theme="light"] .theme-toggle .icon-moon {
+  display: block;
+}
+
+/* ===== SVG CARD ICONS ===== */
+.card-svg-icon {
+  width: 36px;
+  height: 36px;
+  color: var(--blue);
+  margin-bottom: 1rem;
+}
+
+/* ===== LIGHT THEME ===== */
+[data-theme="light"] {
+  --navy: #ffffff;
+  --navy-light: #f0f4f8;
+  --navy-mid: #e2e8f0;
+  --white: #0A192F;
+  --gray-200: #4a5568;
+  --gray-300: #718096;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --blue-glow: rgba(0, 119, 255, 0.08);
+}
+
+[data-theme="light"] .navbar {
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom-color: rgba(0, 119, 255, 0.15);
+}
+
+[data-theme="light"] .footer {
+  background: rgba(240, 244, 248, 0.8);
+  border-top-color: rgba(0, 119, 255, 0.12);
+}
+
+[data-theme="light"] .code-block {
+  background: #f0f4f8;
+  border-color: rgba(0, 119, 255, 0.15);
+}
+
+[data-theme="light"] .code-block code {
+  color: #1a202c;
+}
+
+[data-theme="light"] .card,
+[data-theme="light"] .concept-card,
+[data-theme="light"] .concept-nav a {
+  border-color: rgba(0, 119, 255, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .analogy {
+  background: rgba(0, 119, 255, 0.03);
+  border-color: rgba(0, 119, 255, 0.15);
+}
+
+[data-theme="light"] .comparison-table td {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .concept-nav {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .concept-page code:not(.code-block code) {
+  background: rgba(0, 119, 255, 0.08);
+  color: #0066dd;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .hero h1 {
@@ -576,6 +673,12 @@ main {
 
   .nav-toggle {
     display: block;
+    order: 3;
+  }
+
+  .theme-toggle {
+    order: 2;
+    margin-left: auto;
   }
 
   .nav-links {
@@ -589,6 +692,7 @@ main {
     border-bottom: 1px solid rgba(0, 119, 255, 0.1);
     padding: 1rem 2rem 1.5rem;
     gap: 0.75rem;
+    order: 4;
   }
 
   .nav-links.open {
