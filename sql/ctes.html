@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CTEs (Common Table Expressions) - SQL - DataDecoded</title>
+  <meta name="description" content="Learn what a CTE is, why it beats subqueries, and see a simple example in plain English.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">Data<span>Decoded</span></a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">SQL</a></li>
+        <li><a href="../statistics/index.html">Statistics</a></li>
+        <li><a href="../python/index.html">Python</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="concept-page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="index.html">SQL</a> <span class="sep">/</span>
+        CTEs
+      </div>
+
+      <h1>CTEs (Common Table Expressions)</h1>
+      <p class="subtitle">Readable, reusable building blocks for complex queries</p>
+
+      <h2>What Is a CTE?</h2>
+      <p>A CTE is a temporary, named result set that you define at the top of a query and then reference like a table. It only exists for the duration of that single query.</p>
+      <p>Think of it as giving a name to a chunk of logic so your main query reads like plain English instead of deeply nested spaghetti.</p>
+
+      <div class="analogy">
+        <h3>Real-World Analogy</h3>
+        <p>Imagine you are writing a recipe. Instead of writing "take the mixture you made by combining flour, sugar, and eggs that you beat for 3 minutes" every time, you just say "take the batter." A CTE is like naming the batter - define it once at the top, then refer to it by name wherever you need it.</p>
+      </div>
+
+      <h2>Why CTEs Beat Subqueries</h2>
+      <ul>
+        <li><strong>Readability</strong> - the logic flows top to bottom, not inside out</li>
+        <li><strong>Reusability</strong> - reference the same CTE multiple times in one query</li>
+        <li><strong>Debugging</strong> - you can run each CTE independently to check results</li>
+        <li><strong>Recursion</strong> - CTEs support recursive queries (subqueries do not)</li>
+      </ul>
+
+      <h2>Example: Finding High-Value Customers</h2>
+      <p>Suppose you want to find customers who spent more than the average total order value.</p>
+
+      <p><strong>The subquery approach (harder to read):</strong></p>
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>SELECT customer_name, total_spent
+FROM (
+  SELECT customer_name, SUM(amount) AS total_spent
+  FROM orders
+  GROUP BY customer_name
+) AS customer_totals
+WHERE total_spent > (
+  SELECT AVG(total_spent)
+  FROM (
+    SELECT SUM(amount) AS total_spent
+    FROM orders
+    GROUP BY customer_name
+  ) AS avg_calc
+);</code>
+      </div>
+
+      <p><strong>The CTE approach (clean and clear):</strong></p>
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>WITH customer_totals AS (
+  SELECT customer_name, SUM(amount) AS total_spent
+  FROM orders
+  GROUP BY customer_name
+)
+SELECT customer_name, total_spent
+FROM customer_totals
+WHERE total_spent > (SELECT AVG(total_spent) FROM customer_totals);</code>
+      </div>
+
+      <p>Same result, half the code, twice the clarity. The CTE <code>customer_totals</code> is defined once and used twice.</p>
+
+      <h2>The Syntax Pattern</h2>
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>WITH cte_name AS (
+  -- your query here
+)
+SELECT *
+FROM cte_name
+WHERE ...;</code>
+      </div>
+
+      <p>You can chain multiple CTEs with commas:</p>
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>WITH step1 AS (...),
+     step2 AS (... FROM step1 ...)
+SELECT * FROM step2;</code>
+      </div>
+
+      <div class="takeaway">
+        <h3>Key Takeaway</h3>
+        <p>CTEs let you break complex queries into named, logical steps. They make your SQL easier to read, debug, and maintain. If you find yourself nesting subqueries more than one level deep, reach for a CTE instead.</p>
+      </div>
+
+      <div class="concept-nav">
+        <a href="window-functions.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">Window Functions</span>
+        </a>
+        <a href="joins.html" class="next">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">JOINs Explained</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built by <a href="#">Sai Bysani</a> &middot; DataDecoded</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GROUP BY vs PARTITION BY - SQL - DataDecoded</title>
+  <meta name="description" content="GROUP BY vs PARTITION BY - the confusion every analyst has, cleared up simply.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">Data<span>Decoded</span></a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">SQL</a></li>
+        <li><a href="../statistics/index.html">Statistics</a></li>
+        <li><a href="../python/index.html">Python</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="concept-page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="index.html">SQL</a> <span class="sep">/</span>
+        GROUP BY vs PARTITION BY
+      </div>
+
+      <h1>GROUP BY vs PARTITION BY</h1>
+      <p class="subtitle">Same grouping idea, very different results</p>
+
+      <h2>The One-Sentence Difference</h2>
+      <p><code>GROUP BY</code> collapses rows into one row per group. <code>PARTITION BY</code> keeps every row and adds group-level calculations alongside them.</p>
+
+      <div class="analogy">
+        <h3>Real-World Analogy</h3>
+        <p>Imagine a class of 30 students across 3 sections. <strong>GROUP BY</strong> gives you one summary row per section (like a report card summary: "Section A average = 85"). <strong>PARTITION BY</strong> gives you all 30 rows but writes the section average next to each student so you can compare individuals against their section.</p>
+      </div>
+
+      <h2>The Data</h2>
+      <p>Let's say you have a <code>sales</code> table:</p>
+      <table class="comparison-table">
+        <thead><tr><th>salesperson</th><th>region</th><th>amount</th></tr></thead>
+        <tbody>
+          <tr><td>Alice</td><td>East</td><td>500</td></tr>
+          <tr><td>Bob</td><td>East</td><td>300</td></tr>
+          <tr><td>Carol</td><td>West</td><td>700</td></tr>
+          <tr><td>Dave</td><td>West</td><td>400</td></tr>
+        </tbody>
+      </table>
+
+      <h2>GROUP BY - Collapsed Summary</h2>
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>SELECT region, SUM(amount) AS total_sales
+FROM sales
+GROUP BY region;</code>
+      </div>
+      <table class="comparison-table">
+        <thead><tr><th>region</th><th>total_sales</th></tr></thead>
+        <tbody>
+          <tr><td>East</td><td>800</td></tr>
+          <tr><td>West</td><td>1100</td></tr>
+        </tbody>
+      </table>
+      <p>4 rows collapsed into 2. Individual salesperson detail is gone.</p>
+
+      <h2>PARTITION BY - Detail + Summary</h2>
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>SELECT
+  salesperson,
+  region,
+  amount,
+  SUM(amount) OVER (PARTITION BY region) AS region_total
+FROM sales;</code>
+      </div>
+      <table class="comparison-table">
+        <thead><tr><th>salesperson</th><th>region</th><th>amount</th><th>region_total</th></tr></thead>
+        <tbody>
+          <tr><td>Alice</td><td>East</td><td>500</td><td>800</td></tr>
+          <tr><td>Bob</td><td>East</td><td>300</td><td>800</td></tr>
+          <tr><td>Carol</td><td>West</td><td>700</td><td>1100</td></tr>
+          <tr><td>Dave</td><td>West</td><td>400</td><td>1100</td></tr>
+        </tbody>
+      </table>
+      <p>All 4 rows are preserved. The region total rides alongside each row.</p>
+
+      <h2>Side-by-Side Comparison</h2>
+      <table class="comparison-table">
+        <thead><tr><th>Feature</th><th>GROUP BY</th><th>PARTITION BY</th></tr></thead>
+        <tbody>
+          <tr><td>Rows in result</td><td>One per group</td><td>All original rows</td></tr>
+          <tr><td>Used with</td><td>Aggregate functions (SUM, COUNT...)</td><td>Window functions (OVER clause)</td></tr>
+          <tr><td>Access to detail</td><td>Lost (columns must be in GROUP BY or aggregated)</td><td>Preserved (every column available)</td></tr>
+          <tr><td>Best for</td><td>Summary reports</td><td>Enriching detail with group stats</td></tr>
+        </tbody>
+      </table>
+
+      <h2>When to Use Which</h2>
+      <ul>
+        <li>Need a summary table (total revenue by region)? Use <code>GROUP BY</code>.</li>
+        <li>Need each row plus its group context (each sale with region total)? Use <code>PARTITION BY</code>.</li>
+        <li>Need to rank, number, or compare rows within groups? Use <code>PARTITION BY</code> with a window function.</li>
+      </ul>
+
+      <div class="takeaway">
+        <h3>Key Takeaway</h3>
+        <p>GROUP BY summarizes and collapses. PARTITION BY enriches without collapsing. If you want the detail AND the group calculation, PARTITION BY (via a window function) is your tool. If you just want the summary, GROUP BY is simpler and sufficient.</p>
+      </div>
+
+      <div class="concept-nav">
+        <a href="joins.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">JOINs Explained</span>
+        </a>
+        <div></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built by <a href="#">Sai Bysani</a> &middot; DataDecoded</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

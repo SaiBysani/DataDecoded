@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Window Functions - SQL - DataDecoded</title>
+  <meta name="description" content="Understand SQL Window Functions in plain English - what they are, when to use them, with a RANK() example.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">Data<span>Decoded</span></a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">SQL</a></li>
+        <li><a href="../statistics/index.html">Statistics</a></li>
+        <li><a href="../python/index.html">Python</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="concept-page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="index.html">SQL</a> <span class="sep">/</span>
+        Window Functions
+      </div>
+
+      <h1>Window Functions</h1>
+      <p class="subtitle">Calculations across rows - without losing your detail</p>
+
+      <h2>What Are Window Functions?</h2>
+      <p>A window function performs a calculation across a set of rows that are somehow related to the current row. Think of it as looking through a "window" of related rows while keeping every individual row in your result.</p>
+      <p>The key difference from <code>GROUP BY</code>: window functions do <strong>not</strong> collapse your rows. You get the calculation <em>and</em> the original detail, side by side.</p>
+
+      <div class="analogy">
+        <h3>Real-World Analogy</h3>
+        <p>Imagine you are in a classroom and the teacher posts everyone's test score on the board. With GROUP BY, you would only see the class average - one number. With a window function, you see every student's score <em>plus</em> the class average next to each name. Everyone keeps their row; the aggregate rides along.</p>
+      </div>
+
+      <h2>When to Use Them</h2>
+      <ul>
+        <li><strong>Ranking rows</strong> - who is #1, #2, #3 in each department?</li>
+        <li><strong>Running totals</strong> - cumulative revenue over time</li>
+        <li><strong>Comparing to group statistics</strong> - how does this sale compare to the department average?</li>
+        <li><strong>Accessing other rows</strong> - what was last month's value? (LAG/LEAD)</li>
+      </ul>
+
+      <h2>Example: Ranking Employees by Salary</h2>
+      <p>Suppose you have an <code>employees</code> table and you want to rank each employee within their department by salary.</p>
+
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>SELECT
+  name,
+  department,
+  salary,
+  RANK() OVER (
+    PARTITION BY department
+    ORDER BY salary DESC
+  ) AS salary_rank
+FROM employees;</code>
+      </div>
+
+      <p>Here is what this produces:</p>
+
+      <table class="comparison-table">
+        <thead>
+          <tr><th>name</th><th>department</th><th>salary</th><th>salary_rank</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Alice</td><td>Engineering</td><td>130,000</td><td>1</td></tr>
+          <tr><td>Bob</td><td>Engineering</td><td>120,000</td><td>2</td></tr>
+          <tr><td>Carol</td><td>Engineering</td><td>120,000</td><td>2</td></tr>
+          <tr><td>Dave</td><td>Marketing</td><td>95,000</td><td>1</td></tr>
+          <tr><td>Eve</td><td>Marketing</td><td>88,000</td><td>2</td></tr>
+        </tbody>
+      </table>
+
+      <p>Notice: every row is preserved. <code>RANK()</code> assigned rankings within each department (the <code>PARTITION BY</code> clause). Bob and Carol share rank 2 because they have the same salary.</p>
+
+      <h2>The Syntax Pattern</h2>
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>function_name() OVER (
+  PARTITION BY column   -- defines the "window" (group)
+  ORDER BY column       -- defines the ordering within the window
+)</code>
+      </div>
+
+      <p>Common window functions: <code>RANK()</code>, <code>DENSE_RANK()</code>, <code>ROW_NUMBER()</code>, <code>SUM()</code>, <code>AVG()</code>, <code>LAG()</code>, <code>LEAD()</code>.</p>
+
+      <div class="takeaway">
+        <h3>Key Takeaway</h3>
+        <p>Window functions let you add aggregate-level insights (ranks, running totals, averages) to every row without collapsing your data. If you need the detail AND the summary, reach for a window function.</p>
+      </div>
+
+      <div class="concept-nav">
+        <div></div>
+        <a href="ctes.html" class="next">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">CTEs</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built by <a href="#">Sai Bysani</a> &middot; DataDecoded</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

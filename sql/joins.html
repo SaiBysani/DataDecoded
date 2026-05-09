@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JOINs Explained - SQL - DataDecoded</title>
+  <meta name="description" content="INNER vs LEFT vs RIGHT vs FULL JOINs explained with a real business scenario.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">Data<span>Decoded</span></a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">SQL</a></li>
+        <li><a href="../statistics/index.html">Statistics</a></li>
+        <li><a href="../python/index.html">Python</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="concept-page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="index.html">SQL</a> <span class="sep">/</span>
+        JOINs Explained
+      </div>
+
+      <h1>JOINs Explained</h1>
+      <p class="subtitle">Combining tables - the right way, every time</p>
+
+      <h2>What Is a JOIN?</h2>
+      <p>A JOIN combines rows from two or more tables based on a related column between them. It is how you connect data that lives in separate tables.</p>
+
+      <div class="analogy">
+        <h3>Real-World Analogy</h3>
+        <p>Think of two spreadsheets: one has customer names and IDs, the other has order details and customer IDs. A JOIN is like doing a VLOOKUP - you match rows from both sheets using the customer ID to see the full picture.</p>
+      </div>
+
+      <h2>The Business Scenario</h2>
+      <p>You have two tables at an e-commerce company:</p>
+      <p><strong>customers</strong> - all registered customers (some have never ordered)</p>
+
+      <table class="comparison-table">
+        <thead><tr><th>customer_id</th><th>name</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Alice</td></tr>
+          <tr><td>2</td><td>Bob</td></tr>
+          <tr><td>3</td><td>Carol</td></tr>
+          <tr><td>4</td><td>Dave</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>orders</strong> - all orders placed (some by deleted/guest customers)</p>
+
+      <table class="comparison-table">
+        <thead><tr><th>order_id</th><th>customer_id</th><th>amount</th></tr></thead>
+        <tbody>
+          <tr><td>101</td><td>1</td><td>$50</td></tr>
+          <tr><td>102</td><td>2</td><td>$30</td></tr>
+          <tr><td>103</td><td>NULL</td><td>$20</td></tr>
+        </tbody>
+      </table>
+
+      <h2>INNER JOIN</h2>
+      <p>Returns only rows that have a match in <strong>both</strong> tables.</p>
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>SELECT c.name, o.order_id, o.amount
+FROM customers c
+INNER JOIN orders o ON c.customer_id = o.customer_id;</code>
+      </div>
+      <p><strong>Result:</strong> Alice and Bob (they exist in both tables). Carol, Dave, and the guest order are excluded.</p>
+      <p><strong>Use when:</strong> you only want records that have data on both sides.</p>
+
+      <h2>LEFT JOIN</h2>
+      <p>Returns all rows from the <strong>left</strong> table, plus matching rows from the right. Non-matches get NULL.</p>
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>SELECT c.name, o.order_id, o.amount
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id;</code>
+      </div>
+      <p><strong>Result:</strong> All 4 customers appear. Carol and Dave show NULL for order columns because they never ordered.</p>
+      <p><strong>Use when:</strong> you want all customers regardless of whether they have orders (e.g., finding customers who have never purchased).</p>
+
+      <h2>RIGHT JOIN</h2>
+      <p>Returns all rows from the <strong>right</strong> table, plus matching rows from the left. Non-matches get NULL.</p>
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>SELECT c.name, o.order_id, o.amount
+FROM customers c
+RIGHT JOIN orders o ON c.customer_id = o.customer_id;</code>
+      </div>
+      <p><strong>Result:</strong> All 3 orders appear. The guest order (customer_id NULL) shows NULL for the customer name.</p>
+      <p><strong>Use when:</strong> you want all orders even if the customer record is missing. In practice, most people rewrite RIGHT JOINs as LEFT JOINs by swapping the table order.</p>
+
+      <h2>FULL OUTER JOIN</h2>
+      <p>Returns all rows from <strong>both</strong> tables. Non-matches on either side get NULL.</p>
+      <div class="code-block">
+        <span class="code-label">SQL</span>
+        <code>SELECT c.name, o.order_id, o.amount
+FROM customers c
+FULL OUTER JOIN orders o ON c.customer_id = o.customer_id;</code>
+      </div>
+      <p><strong>Result:</strong> All 4 customers and all 3 orders. Carol and Dave have NULL orders; the guest order has a NULL customer name.</p>
+      <p><strong>Use when:</strong> you want the complete picture from both sides, missing matches included.</p>
+
+      <h2>Quick Reference</h2>
+      <table class="comparison-table">
+        <thead><tr><th>JOIN Type</th><th>Left Table</th><th>Right Table</th><th>When to Use</th></tr></thead>
+        <tbody>
+          <tr><td>INNER</td><td>Matched only</td><td>Matched only</td><td>Only want complete matches</td></tr>
+          <tr><td>LEFT</td><td>All rows</td><td>Matched only</td><td>Keep all from the "main" table</td></tr>
+          <tr><td>RIGHT</td><td>Matched only</td><td>All rows</td><td>Keep all from the secondary table</td></tr>
+          <tr><td>FULL OUTER</td><td>All rows</td><td>All rows</td><td>See everything, gaps included</td></tr>
+        </tbody>
+      </table>
+
+      <div class="takeaway">
+        <h3>Key Takeaway</h3>
+        <p>INNER JOIN = only matches. LEFT JOIN = all from the left, matches from the right. In real work, LEFT JOIN is the most common because you usually have a "main" table you want to keep complete while enriching it with data from another table.</p>
+      </div>
+
+      <div class="concept-nav">
+        <a href="ctes.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">CTEs</span>
+        </a>
+        <a href="group-by-vs-partition-by.html" class="next">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">GROUP BY vs PARTITION BY</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built by <a href="#">Sai Bysani</a> &middot; DataDecoded</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

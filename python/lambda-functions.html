@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lambda Functions - Python - DataDecoded</title>
+  <meta name="description" content="Python Lambda Functions - one-liner anonymous functions explained simply, with when to use and when not to.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">Data<span>Decoded</span></a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="../sql/index.html">SQL</a></li>
+        <li><a href="../statistics/index.html">Statistics</a></li>
+        <li><a href="index.html" class="active">Python</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="concept-page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="index.html">Python</a> <span class="sep">/</span>
+        Lambda Functions
+      </div>
+
+      <h1>Lambda Functions</h1>
+      <p class="subtitle">Anonymous one-liner functions for quick operations</p>
+
+      <h2>What Is a Lambda?</h2>
+      <p>A lambda is a small, anonymous function defined in a single line. It takes arguments, performs one expression, and returns the result - all without needing a <code>def</code> statement or a name.</p>
+
+      <div class="analogy">
+        <h3>Real-World Analogy</h3>
+        <p>A regular function is like a recipe card you label and file away - it has a name, and you pull it out whenever you need it. A lambda is like telling someone a quick instruction on the spot: "Just double it." You do not bother writing it down because you only need it right now.</p>
+      </div>
+
+      <h2>The Syntax</h2>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>lambda arguments: expression</code>
+      </div>
+
+      <p>Compare a regular function to a lambda:</p>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code># Regular function
+def double(x):
+    return x * 2
+
+# Lambda equivalent
+double = lambda x: x * 2
+
+# Both work the same way:
+double(5)  # returns 10</code>
+      </div>
+
+      <h2>When to Use Lambdas</h2>
+      <p>Lambdas shine when you need a small throwaway function as an argument to another function. The most common cases in data work:</p>
+
+      <p><strong>Sorting with a custom key:</strong></p>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>names = ["Carol", "Bob", "Alice"]
+sorted(names, key=lambda x: len(x))
+# ['Bob', 'Carol', 'Alice'] - sorted by name length</code>
+      </div>
+
+      <p><strong>With map() to transform data:</strong></p>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>prices = [10, 20, 30]
+with_tax = list(map(lambda p: p * 1.08, prices))
+# [10.8, 21.6, 32.4]</code>
+      </div>
+
+      <p><strong>With filter() to select data:</strong></p>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>numbers = [1, 2, 3, 4, 5, 6, 7, 8]
+big = list(filter(lambda x: x > 5, numbers))
+# [6, 7, 8]</code>
+      </div>
+
+      <p><strong>In pandas for quick column operations:</strong></p>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>import pandas as pd
+
+df = pd.DataFrame({"name": ["alice", "bob"], "salary": [50000, 60000]})
+df["name"] = df["name"].apply(lambda x: x.title())
+# Capitalizes names: "Alice", "Bob"</code>
+      </div>
+
+      <h2>When NOT to Use Lambdas</h2>
+      <ul>
+        <li><strong>Complex logic</strong> - if you need multiple lines, use <code>def</code></li>
+        <li><strong>Reuse</strong> - if you will call the function in multiple places, give it a proper name with <code>def</code></li>
+        <li><strong>Readability</strong> - if the lambda is hard to read at a glance, a named function is better</li>
+      </ul>
+
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code># Bad - hard to read lambda
+result = sorted(data, key=lambda x: (x['dept'], -x['salary'], x['name'].lower()))
+
+# Better - named function
+def sort_key(employee):
+    return (employee['dept'], -employee['salary'], employee['name'].lower())
+
+result = sorted(data, key=sort_key)</code>
+      </div>
+
+      <div class="takeaway">
+        <h3>Key Takeaway</h3>
+        <p>Lambdas are throwaway one-liner functions. Use them when you need a small function as an argument (sorting keys, map/filter, pandas apply). If the logic needs multiple lines or you will reuse it, write a regular function with <code>def</code> instead.</p>
+      </div>
+
+      <div class="concept-nav">
+        <a href="list-comprehensions.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">List Comprehensions</span>
+        </a>
+        <a href="pandas-groupby.html" class="next">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">Pandas groupby</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built by <a href="#">Sai Bysani</a> &middot; DataDecoded</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

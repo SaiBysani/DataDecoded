@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central Limit Theorem - Statistics - DataDecoded</title>
+  <meta name="description" content="Central Limit Theorem explained simply - why it matters in data, with a straightforward analogy.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">Data<span>Decoded</span></a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="../sql/index.html">SQL</a></li>
+        <li><a href="index.html" class="active">Statistics</a></li>
+        <li><a href="../python/index.html">Python</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="concept-page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="index.html">Statistics</a> <span class="sep">/</span>
+        Central Limit Theorem
+      </div>
+
+      <h1>Central Limit Theorem</h1>
+      <p class="subtitle">The reason so much of statistics actually works</p>
+
+      <h2>What Is It?</h2>
+      <p>The Central Limit Theorem (CLT) says: if you take many random samples from <em>any</em> population and calculate the average of each sample, those averages will form a normal distribution (bell curve) - even if the original data is not normally distributed.</p>
+      <p>The larger each sample, the more perfectly bell-shaped the distribution of averages becomes.</p>
+
+      <div class="analogy">
+        <h3>The Dice Analogy</h3>
+        <p>Roll a single die - each number (1-6) is equally likely. The distribution is flat, not bell-shaped at all.</p>
+        <p>Now roll 30 dice and calculate the average. Do this 1,000 times. Plot those 1,000 averages. You will get a near-perfect bell curve centered around 3.5 (the true average of a die).</p>
+        <p>That is the CLT in action: individual outcomes are unpredictable and non-normal, but the average of a group behaves beautifully.</p>
+      </div>
+
+      <h2>Why It Matters in Data</h2>
+      <ul>
+        <li><strong>Confidence intervals</strong> - the CLT is why we can build confidence intervals around sample means, even when the underlying data is skewed</li>
+        <li><strong>Hypothesis testing</strong> - most tests (t-tests, z-tests) assume the sampling distribution of the mean is normal. The CLT guarantees this for large enough samples</li>
+        <li><strong>A/B testing</strong> - when you compare conversion rates across groups, the CLT lets you use normal-distribution-based formulas even though individual conversions are binary (0 or 1)</li>
+        <li><strong>Survey results</strong> - polling 1,000 people can represent millions because the CLT ensures the sample mean is close to the true population mean</li>
+      </ul>
+
+      <h2>The Key Conditions</h2>
+      <ol>
+        <li><strong>Random sampling</strong> - your samples must be randomly selected</li>
+        <li><strong>Independence</strong> - each observation should not influence another</li>
+        <li><strong>Sufficient sample size</strong> - typically n &ge; 30 is the rule of thumb (less for already-normal data, more for heavily skewed data)</li>
+      </ol>
+
+      <h2>What It Does NOT Say</h2>
+      <p>The CLT is about the distribution of <em>sample means</em>, not individual data points. If you collect 1,000 salary data points, those individual salaries will still be skewed. But if you repeatedly take samples of 50 salaries and average them, those averages will be normally distributed.</p>
+
+      <div class="takeaway">
+        <h3>Key Takeaway</h3>
+        <p>The CLT guarantees that sample averages follow a normal distribution regardless of the shape of the original data, as long as your sample is large enough. This is why we can use normal-distribution-based statistical tools on almost any real-world dataset. It is the backbone of modern statistical inference.</p>
+      </div>
+
+      <div class="concept-nav">
+        <a href="p-value.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">P-Value</span>
+        </a>
+        <a href="correlation-vs-causation.html" class="next">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">Correlation vs Causation</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built by <a href="#">Sai Bysani</a> &middot; DataDecoded</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

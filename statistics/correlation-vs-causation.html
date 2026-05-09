@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Correlation vs Causation - Statistics - DataDecoded</title>
+  <meta name="description" content="Correlation vs Causation explained with the ice cream and crime example. Why this distinction matters.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">Data<span>Decoded</span></a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="../sql/index.html">SQL</a></li>
+        <li><a href="index.html" class="active">Statistics</a></li>
+        <li><a href="../python/index.html">Python</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="concept-page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="index.html">Statistics</a> <span class="sep">/</span>
+        Correlation vs Causation
+      </div>
+
+      <h1>Correlation vs Causation</h1>
+      <p class="subtitle">Just because two things move together does not mean one causes the other</p>
+
+      <h2>The One-Liner</h2>
+      <p><strong>Correlation</strong> means two variables move together (when one goes up, the other tends to go up or down). <strong>Causation</strong> means one variable directly causes the other to change.</p>
+
+      <h2>The Ice Cream and Crime Example</h2>
+      <p>Here is a real statistical finding: ice cream sales and crime rates are positively correlated. When ice cream sales go up, crime goes up too.</p>
+      <p>Does this mean ice cream causes crime? Should we ban ice cream to reduce crime? Obviously not.</p>
+      <p>The hidden factor is <strong>temperature</strong>. When it is hot outside, people buy more ice cream AND more people are outdoors, leading to more opportunities for crime. Temperature is the <strong>confounding variable</strong> - it drives both ice cream sales and crime rates independently.</p>
+
+      <div class="analogy">
+        <h3>Another Way to See It</h3>
+        <p>Drowning deaths and Nicolas Cage movie releases are correlated (this is a real dataset). Nobody believes Nicolas Cage movies cause drowning. The correlation is pure coincidence - or driven by an unrelated third factor (both happen more in summer months, or it is simply a statistical fluke with a small dataset).</p>
+      </div>
+
+      <h2>Why This Matters in Data Work</h2>
+      <ul>
+        <li><strong>Business decisions:</strong> if you see that users who use Feature X have higher retention, does Feature X cause retention? Or do already-engaged users simply use more features?</li>
+        <li><strong>A/B testing exists for this reason:</strong> randomized experiments are the gold standard for establishing causation because they control for confounding variables</li>
+        <li><strong>Dashboard metrics:</strong> just because two KPIs trend together does not mean changing one will affect the other</li>
+      </ul>
+
+      <h2>How to Establish Causation</h2>
+      <ol>
+        <li><strong>Randomized controlled experiment (A/B test)</strong> - randomly assign users to groups and change only one variable</li>
+        <li><strong>Control for confounders</strong> - use regression or matching to isolate the effect of one variable</li>
+        <li><strong>Look for a mechanism</strong> - is there a logical reason why A would cause B?</li>
+        <li><strong>Check temporal order</strong> - A must come before B in time for A to cause B</li>
+        <li><strong>Replicate</strong> - does the relationship hold across different datasets and contexts?</li>
+      </ol>
+
+      <h2>The Three Scenarios</h2>
+      <table class="comparison-table">
+        <thead><tr><th>Scenario</th><th>What Is Happening</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>A causes B</td><td>Direct causation</td><td>Smoking causes lung cancer</td></tr>
+          <tr><td>C causes both A and B</td><td>Confounding variable</td><td>Heat causes both ice cream sales and crime</td></tr>
+          <tr><td>Coincidence</td><td>Spurious correlation</td><td>Nicolas Cage movies and drowning deaths</td></tr>
+        </tbody>
+      </table>
+
+      <div class="takeaway">
+        <h3>Key Takeaway</h3>
+        <p>Correlation tells you two things are related. It does NOT tell you one causes the other. Always ask: "Is there a confounding variable?" and "Could this be coincidence?" The only reliable way to prove causation is a controlled experiment. When you cannot experiment, be transparent that you are observing a correlation, not proving a cause.</p>
+      </div>
+
+      <div class="concept-nav">
+        <a href="central-limit-theorem.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">Central Limit Theorem</span>
+        </a>
+        <div></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built by <a href="#">Sai Bysani</a> &middot; DataDecoded</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

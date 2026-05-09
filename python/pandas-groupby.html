@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pandas groupby - Python - DataDecoded</title>
+  <meta name="description" content="Pandas groupby explained - the most used operation in data analysis, with a real dataset example.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">Data<span>Decoded</span></a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="../sql/index.html">SQL</a></li>
+        <li><a href="../statistics/index.html">Statistics</a></li>
+        <li><a href="index.html" class="active">Python</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="concept-page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="index.html">Python</a> <span class="sep">/</span>
+        Pandas groupby
+      </div>
+
+      <h1>Pandas groupby</h1>
+      <p class="subtitle">Split your data, calculate summaries, combine the results</p>
+
+      <h2>What Is groupby?</h2>
+      <p><code>groupby()</code> splits a DataFrame into groups based on one or more columns, applies a function (like sum, mean, or count) to each group, and then combines the results back together. It is the pandas equivalent of SQL's <code>GROUP BY</code>.</p>
+
+      <div class="analogy">
+        <h3>Real-World Analogy</h3>
+        <p>Imagine you have a pile of receipts from different stores. You sort them into piles by store name (split), add up the total for each pile (apply), and then write a summary sheet with one row per store (combine). That is exactly what groupby does.</p>
+      </div>
+
+      <h2>Real Dataset Example</h2>
+      <p>Suppose you have sales data for an online store:</p>
+
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>import pandas as pd
+
+df = pd.DataFrame({
+    "date":     ["2024-01-15", "2024-01-15", "2024-01-16", "2024-01-16", "2024-01-17"],
+    "product":  ["Widget",     "Gadget",     "Widget",     "Widget",     "Gadget"],
+    "region":   ["East",       "East",       "West",       "East",       "West"],
+    "quantity": [10,           5,            8,            12,           7],
+    "revenue":  [200,          150,          160,          240,          210]
+})</code>
+      </div>
+
+      <h2>Basic groupby: Total Revenue by Product</h2>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>df.groupby("product")["revenue"].sum()
+
+# product
+# Gadget    360
+# Widget    600</code>
+      </div>
+      <p>One line: group by product, grab the revenue column, sum it.</p>
+
+      <h2>Multiple Aggregations</h2>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>df.groupby("product").agg(
+    total_revenue=("revenue", "sum"),
+    avg_quantity=("quantity", "mean"),
+    num_orders=("quantity", "count")
+)
+
+#         total_revenue  avg_quantity  num_orders
+# product
+# Gadget           360           6.0           2
+# Widget           600          10.0           3</code>
+      </div>
+      <p>The <code>.agg()</code> method lets you compute multiple summaries at once with clear column names.</p>
+
+      <h2>Grouping by Multiple Columns</h2>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>df.groupby(["product", "region"])["revenue"].sum()
+
+# product  region
+# Gadget   East      150
+#          West      210
+# Widget   East      440
+#          West      160</code>
+      </div>
+      <p>This breaks down revenue by both product AND region.</p>
+
+      <h2>Common Operations After groupby</h2>
+      <table class="comparison-table">
+        <thead><tr><th>Method</th><th>What It Does</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><code>.sum()</code></td><td>Total per group</td><td>Total revenue by region</td></tr>
+          <tr><td><code>.mean()</code></td><td>Average per group</td><td>Average order size by product</td></tr>
+          <tr><td><code>.count()</code></td><td>Number of rows per group</td><td>Number of orders per customer</td></tr>
+          <tr><td><code>.min()</code> / <code>.max()</code></td><td>Min or max per group</td><td>Largest sale by region</td></tr>
+          <tr><td><code>.agg()</code></td><td>Multiple functions at once</td><td>Sum, mean, and count together</td></tr>
+          <tr><td><code>.transform()</code></td><td>Return result same size as input</td><td>Add group mean as a new column</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Pro Tip: transform vs agg</h2>
+      <p><code>.agg()</code> collapses groups into summary rows (like SQL GROUP BY). <code>.transform()</code> returns a value for every original row (like SQL PARTITION BY).</p>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code># Add each product's total revenue as a column (no collapsing)
+df["product_total"] = df.groupby("product")["revenue"].transform("sum")
+
+#         date product region  quantity  revenue  product_total
+# 0 2024-01-15  Widget   East        10      200            600
+# 1 2024-01-15  Gadget   East         5      150            360
+# 2 2024-01-16  Widget   West         8      160            600
+# 3 2024-01-16  Widget   East        12      240            600
+# 4 2024-01-17  Gadget   West         7      210            360</code>
+      </div>
+
+      <div class="takeaway">
+        <h3>Key Takeaway</h3>
+        <p>Pandas <code>groupby()</code> follows the split-apply-combine pattern: split data into groups, apply a calculation, and combine the results. Use <code>.agg()</code> for summary tables and <code>.transform()</code> when you want to keep every row but add group-level information. It is the single most important operation for data analysis in pandas.</p>
+      </div>
+
+      <div class="concept-nav">
+        <a href="lambda-functions.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">Lambda Functions</span>
+        </a>
+        <div></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built by <a href="#">Sai Bysani</a> &middot; DataDecoded</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List Comprehensions - Python - DataDecoded</title>
+  <meta name="description" content="Python List Comprehensions explained - before and after examples showing the cleaner way to build lists.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">Data<span>Decoded</span></a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="../sql/index.html">SQL</a></li>
+        <li><a href="../statistics/index.html">Statistics</a></li>
+        <li><a href="index.html" class="active">Python</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="concept-page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="index.html">Python</a> <span class="sep">/</span>
+        List Comprehensions
+      </div>
+
+      <h1>List Comprehensions</h1>
+      <p class="subtitle">Build lists in one clean line instead of four</p>
+
+      <h2>What Are They?</h2>
+      <p>A list comprehension is a concise way to create a new list by applying an expression to each item in an existing iterable (like a list, range, or string), all in a single line.</p>
+
+      <div class="analogy">
+        <h3>Real-World Analogy</h3>
+        <p>Imagine you have a box of apples. You want only the red ones, and you want to wash each one. The traditional way: grab an empty basket, go through each apple one by one, check if it is red, wash it, put it in the basket. A list comprehension is like saying: "Give me a basket of washed apples for every apple in the box that is red." Same result, one sentence instead of four steps.</p>
+      </div>
+
+      <h2>Before and After</h2>
+
+      <p><strong>The loop way (before):</strong></p>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>squares = []
+for x in range(10):
+    squares.append(x ** 2)
+
+# squares = [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</code>
+      </div>
+
+      <p><strong>The list comprehension way (after):</strong></p>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>squares = [x ** 2 for x in range(10)]
+
+# squares = [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</code>
+      </div>
+
+      <p>Same output. One line instead of three. Easier to read once you know the pattern.</p>
+
+      <h2>The Pattern</h2>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>[expression for item in iterable]
+
+# With a condition (filter):
+[expression for item in iterable if condition]</code>
+      </div>
+
+      <h2>More Examples</h2>
+
+      <p><strong>Filter even numbers:</strong></p>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>evens = [x for x in range(20) if x % 2 == 0]
+# [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]</code>
+      </div>
+
+      <p><strong>Convert temperatures from Celsius to Fahrenheit:</strong></p>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>celsius = [0, 10, 20, 30, 40]
+fahrenheit = [(c * 9/5) + 32 for c in celsius]
+# [32.0, 50.0, 68.0, 86.0, 104.0]</code>
+      </div>
+
+      <p><strong>Extract first names from a list of full names:</strong></p>
+      <div class="code-block">
+        <span class="code-label">Python</span>
+        <code>names = ["Alice Smith", "Bob Jones", "Carol Lee"]
+first_names = [name.split()[0] for name in names]
+# ["Alice", "Bob", "Carol"]</code>
+      </div>
+
+      <h2>When NOT to Use Them</h2>
+      <ul>
+        <li><strong>Complex logic</strong> - if you need multiple if/else branches or nested loops, a regular for loop is clearer</li>
+        <li><strong>Side effects</strong> - if you are calling a function for its side effect (like printing), use a normal loop</li>
+        <li><strong>Readability suffers</strong> - if the comprehension is longer than ~80 characters, break it into a loop</li>
+      </ul>
+
+      <div class="takeaway">
+        <h3>Key Takeaway</h3>
+        <p>List comprehensions replace the create-empty-list / loop / append pattern with a single readable line. Use them for simple transformations and filters. If the logic gets complex, a regular loop is the better choice for clarity.</p>
+      </div>
+
+      <div class="concept-nav">
+        <div></div>
+        <a href="lambda-functions.html" class="next">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">Lambda Functions</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built by <a href="#">Sai Bysani</a> &middot; DataDecoded</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P-Value - Statistics - DataDecoded</title>
+  <meta name="description" content="P-Value explained like you are 10 years old - common misconceptions and a real example.">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="logo">Data<span>Decoded</span></a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="../sql/index.html">SQL</a></li>
+        <li><a href="index.html" class="active">Statistics</a></li>
+        <li><a href="../python/index.html">Python</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="concept-page">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="index.html">Statistics</a> <span class="sep">/</span>
+        P-Value
+      </div>
+
+      <h1>P-Value</h1>
+      <p class="subtitle">The most misunderstood number in data science</p>
+
+      <h2>Explain It Like I Am 10</h2>
+      <p>Imagine you have a coin and you want to know if it is fair. You flip it 100 times and get 60 heads. Is the coin rigged, or did you just get lucky?</p>
+      <p>The p-value answers this question: <strong>"If the coin really is fair, how likely is it that I would see a result this extreme (or more extreme) just by chance?"</strong></p>
+      <p>If the p-value is very small (say 0.02), it means there is only a 2% chance of getting 60+ heads with a fair coin. That is pretty unlikely, so you might conclude the coin is not fair.</p>
+      <p>If the p-value is large (say 0.35), it means results like yours happen 35% of the time with a fair coin. Nothing unusual - probably just normal luck.</p>
+
+      <div class="analogy">
+        <h3>The Courtroom Analogy</h3>
+        <p>Think of a courtroom. The defendant (your hypothesis) is "innocent until proven guilty." The p-value is like the strength of the evidence against them. A tiny p-value is overwhelming evidence - enough to convict. A large p-value means the evidence is weak - not enough to reject the claim of innocence.</p>
+      </div>
+
+      <h2>The Formal Definition</h2>
+      <p>The p-value is the probability of observing a result as extreme as (or more extreme than) the one you got, <strong>assuming the null hypothesis is true</strong>.</p>
+      <ul>
+        <li><strong>Null hypothesis (H0):</strong> the default assumption (e.g., "the coin is fair," "there is no difference between groups")</li>
+        <li><strong>Small p-value (&lt; 0.05):</strong> the data is unlikely under H0, so we reject it</li>
+        <li><strong>Large p-value (&ge; 0.05):</strong> the data is consistent with H0, so we fail to reject it</li>
+      </ul>
+
+      <h2>Real Example: A/B Testing</h2>
+      <p>Your company tests two website buttons: blue (control) vs green (variant). After a week:</p>
+      <ul>
+        <li>Blue button: 5.0% conversion rate (200 out of 4,000)</li>
+        <li>Green button: 5.8% conversion rate (232 out of 4,000)</li>
+      </ul>
+      <p>The green button looks better, but is this a real difference or just random noise? You run a hypothesis test and get <strong>p = 0.11</strong>.</p>
+      <p>Since 0.11 &gt; 0.05, you <strong>cannot</strong> confidently say the green button is better. The observed difference could easily be due to chance. You need more data or a bigger effect to be sure.</p>
+
+      <h2>Common Misconception</h2>
+      <p><strong>Wrong:</strong> "A p-value of 0.03 means there is a 3% chance the null hypothesis is true."</p>
+      <p><strong>Right:</strong> "A p-value of 0.03 means that if the null hypothesis IS true, there is a 3% chance of seeing data this extreme."</p>
+      <p>The p-value is about the <em>data</em>, not about the hypothesis. It does not tell you the probability that your hypothesis is correct - it tells you how surprising your data would be if the null hypothesis were true.</p>
+
+      <h2>The 0.05 Threshold</h2>
+      <p>The commonly used cutoff of 0.05 is a convention, not a law of nature. It means "we accept a 5% risk of wrongly rejecting a true null hypothesis." Different fields use different thresholds - particle physics uses 0.0000003 (5 sigma). The right threshold depends on the consequences of being wrong.</p>
+
+      <div class="takeaway">
+        <h3>Key Takeaway</h3>
+        <p>A p-value measures how surprising your data is under the assumption that nothing interesting is happening. Small p-value = surprising data = evidence against the status quo. It does NOT tell you the probability your hypothesis is true, and 0.05 is a convention, not a magic number.</p>
+      </div>
+
+      <div class="concept-nav">
+        <div></div>
+        <a href="central-limit-theorem.html" class="next">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">Central Limit Theorem</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Built by <a href="#">Sai Bysani</a> &middot; DataDecoded</p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
